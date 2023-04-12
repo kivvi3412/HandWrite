@@ -79,9 +79,8 @@ class Windows(QtWidgets.QDialog, Ui_Form):
 
         # 设置默认文本
         default_text = (
-            "Type something here...\n"
-            "Push `Export` to generate the image.\n"
-            "Results in `outputs` folder.\n"
+            "使用 PyQt5 编写的手写字生成器，旨在完成一些无用的手写作业任务"
+            "本项目提供了丰富的参数设置，以满足您在生成手写字时的个性化需求"
         )
         self.textEdit_main.setPlainText(default_text)
 
@@ -97,25 +96,25 @@ class Windows(QtWidgets.QDialog, Ui_Form):
 
     # 读取填写信息
     def get_info_from_form(self):
-        self.params["default_paper_x"] = int(self.lineEdit_width.text())
-        self.params["default_paper_y"] = int(self.lineEdit_height.text())
+        self.params["default_paper_x"] = int(float(self.lineEdit_width.text()))
+        self.params["default_paper_y"] = int(float(self.lineEdit_height.text()))
         self.params["default_font"] = self.basic_tools.get_ttf_file_path()[1][self.ttf_selector.currentIndex()]
-        self.params["default_font_size"] = int(self.lineEdit_font_size.text())
-        self.params["default_line_spacing"] = int(self.lineEdit_line_spacing.text())
-        self.params["default_word_spacing"] = int(self.lineEdit_char_distance.text())
-        self.params["default_top_margin"] = int(self.lineEdit_margin_top.text())
-        self.params["default_bottom_margin"] = int(self.lineEdit_margin_bottom.text())
-        self.params["default_left_margin"] = int(self.lineEdit_margin_left.text())
-        self.params["default_right_margin"] = int(self.lineEdit_margin_right.text())
+        self.params["default_font_size"] = int(float(self.lineEdit_font_size.text()))
+        self.params["default_line_spacing"] = int(float(self.lineEdit_line_spacing.text()))
+        self.params["default_word_spacing"] = int(float(self.lineEdit_char_distance.text()))
+        self.params["default_top_margin"] = int(float(self.lineEdit_margin_top.text()))
+        self.params["default_bottom_margin"] = int(float(self.lineEdit_margin_bottom.text()))
+        self.params["default_left_margin"] = int(float(self.lineEdit_margin_left.text()))
+        self.params["default_right_margin"] = int(float(self.lineEdit_margin_right.text()))
         self.params["default_fill"] = self.basic_tools.font_color_dict[self.comboBox_char_color.currentText()]
         self.params["default_background"] = self.basic_tools.background_color_dict[
             self.comboBox_background_color.currentText()]
         self.params["rate"] = self.basic_tools.default_rate_dict[self.comboBox_resolution.currentText()]
-        self.params["default_line_spacing_sigma"] = int(self.lineEdit_line_spacing_sigma.text())
-        self.params["default_font_size_sigma"] = int(self.lineEdit_font_size_sigma.text())
-        self.params["default_word_spacing_sigma"] = int(self.lineEdit_word_spacing_sigma.text())
-        self.params["default_perturb_x_sigma"] = int(self.lineEdit_perturb_x_sigma.text())
-        self.params["default_perturb_y_sigma"] = int(self.lineEdit_perturb_y_sigma.text())
+        self.params["default_line_spacing_sigma"] = float(self.lineEdit_line_spacing_sigma.text())
+        self.params["default_font_size_sigma"] = float(self.lineEdit_font_size_sigma.text())
+        self.params["default_word_spacing_sigma"] = float(self.lineEdit_word_spacing_sigma.text())
+        self.params["default_perturb_x_sigma"] = float(self.lineEdit_perturb_x_sigma.text())
+        self.params["default_perturb_y_sigma"] = float(self.lineEdit_perturb_y_sigma.text())
         self.params["default_perturb_theta_sigma"] = float(self.lineEdit_perturb_theta_sigma.text())
 
     def get_text_from_textedit_main(self):
