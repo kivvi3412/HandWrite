@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import fnmatch
 import os
 
 from PyQt5.QtCore import Qt
