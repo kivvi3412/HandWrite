@@ -8,45 +8,7 @@ from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsScene
 
 from QT_GUI.qt_gui import *
 from core import handwrite_generator
-
-
-class BasicTools(object):
-    def __init__(self):
-        # 字体颜色字典
-        self.font_color_dict = {
-            "black": (0, 0, 0, 255),
-            "white": (255, 255, 255, 255),
-            "red": (255, 0, 0, 255),
-            "blue": (0, 0, 255, 255)
-        }
-
-        # 背景颜色字典
-        self.background_color_dict = {
-            "transparent": (0, 0, 0, 0),
-            "white": (255, 255, 255, 255)
-        }
-
-        # 默认方法倍率(rate)
-        self.default_rate_dict = {
-            "x1": 1,
-            "x2": 2,
-            "x4": 4,
-            "x8": 8,
-            "x16": 16,
-            "x32": 32,
-            "x64": 64
-        }
-
-    @staticmethod
-    def get_ttf_file_path() -> (list, list):
-        ttf_library_path = "ttf_library"
-        ttf_files = []
-        ttf_files_path = []
-        for file in os.listdir(ttf_library_path):
-            if fnmatch.fnmatch(file, '*.ttf'):
-                ttf_files.append(file[:-4])
-                ttf_files_path.append(os.path.join(ttf_library_path, file))
-        return ttf_files, ttf_files_path
+from tools import BasicTools
 
 
 class Windows(QtWidgets.QDialog, Ui_Form):
@@ -70,6 +32,8 @@ class Windows(QtWidgets.QDialog, Ui_Form):
         scene = QGraphicsScene()
         scene.addItem(item)
         self.img_preview.setScene(scene)
+        self.img_preview.horizontalScrollBar().setValue(1)  # 设置滚动条初始位置
+        self.img_preview.verticalScrollBar().setValue(1)  # 设置滚动条初始位置
 
     def page_number_change(self):
         if self.page_number.currentText() != "":
@@ -105,11 +69,19 @@ class Windows(QtWidgets.QDialog, Ui_Form):
         self.comboBox_background_color.addItems(self.basic_tools.background_color_dict.keys())
         self.comboBox_background_color.setCurrentIndex(0)
 
+        # 设置扰动参数
+        self.lineEdit_line_spacing_sigma.setText(str(self.params["default_line_spacing_sigma"]))
+        self.lineEdit_font_size_sigma.setText(str(self.params["default_font_size_sigma"]))
+        self.lineEdit_word_spacing_sigma.setText(str(self.params["default_word_spacing_sigma"]))
+        self.lineEdit_perturb_x_sigma.setText(str(self.params["default_perturb_x_sigma"]))
+        self.lineEdit_perturb_y_sigma.setText(str(self.params["default_perturb_y_sigma"]))
+        self.lineEdit_perturb_theta_sigma.setText(str(self.params["default_perturb_theta_sigma"]))
+
         # 设置默认文本
         default_text = (
             "Type something here...\n"
-            "Push `Preview` to see the result.\n"
             "Push `Export` to generate the image.\n"
+            "Results in `outputs` folder.\n"
         )
         self.textEdit_main.setPlainText(default_text)
 
@@ -139,6 +111,12 @@ class Windows(QtWidgets.QDialog, Ui_Form):
         self.params["default_background"] = self.basic_tools.background_color_dict[
             self.comboBox_background_color.currentText()]
         self.params["rate"] = self.basic_tools.default_rate_dict[self.comboBox_resolution.currentText()]
+        self.params["default_line_spacing_sigma"] = int(self.lineEdit_line_spacing_sigma.text())
+        self.params["default_font_size_sigma"] = int(self.lineEdit_font_size_sigma.text())
+        self.params["default_word_spacing_sigma"] = int(self.lineEdit_word_spacing_sigma.text())
+        self.params["default_perturb_x_sigma"] = int(self.lineEdit_perturb_x_sigma.text())
+        self.params["default_perturb_y_sigma"] = int(self.lineEdit_perturb_y_sigma.text())
+        self.params["default_perturb_theta_sigma"] = float(self.lineEdit_perturb_theta_sigma.text())
 
     def get_text_from_textedit_main(self):
         return self.textEdit_main.toPlainText()

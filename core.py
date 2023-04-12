@@ -3,22 +3,23 @@ from pathlib import Path
 
 from PIL import Image, ImageFont
 from handright import Template, handwrite
+from tools import BasicTools
 
 
 class handwrite_generator(object):
     def __init__(self):
         self.template_params = {
-            "rate": 1,  # 图片缩放比例
-            "default_paper_x": 1334,  # 默认纸张宽度 px
-            "default_paper_y": 1890,  # 默认纸张高度 px
-            "default_font": "ttf_library/liguofu-1.ttf",  # 默认字体文件路径
+            "rate": 4,  # 图片缩放比例
+            "default_paper_x": 667,  # 默认纸张宽度 px
+            "default_paper_y": 945,  # 默认纸张高度 px
+            "default_font": BasicTools.get_ttf_file_path()[1][0],  # 默认字体文件路径
             "default_img_output_path": "outputs",  # 默认图片输出路径
             "default_font_size": 30,  # 默认字体大小
             "default_line_spacing": 70,  # 默认行间距 px
-            "default_top_margin": 143,  # 默认顶部留白 px
-            "default_bottom_margin": 207,  # 默认底部留白 px
-            "default_left_margin": 203,  # 默认左边留白 px
-            "default_right_margin": 203,  # 默认右边留白 px
+            "default_top_margin": 10,  # 默认顶部留白 px
+            "default_bottom_margin": 10,  # 默认底部留白 px
+            "default_left_margin": 10,  # 默认左边留白 px
+            "default_right_margin": 10,  # 默认右边留白 px
             "default_word_spacing": 1,  # 默认字间距 px
             "default_line_spacing_sigma": 1,  # 默认行间距随机扰动 px
             "default_font_size_sigma": 1,  # 默认字体大小随机扰动 px
@@ -31,7 +32,7 @@ class handwrite_generator(object):
             "default_background": (0, 0, 0, 0),  # 默认背景颜色 (透明)
             "default_fill": (0, 0, 0, 255),  # 默认字体填充颜色 (黑色)
         }
-        self.template = None
+        self.template = None    # 模板
 
     def modify_template_params(self, **kwargs):
         for key, value in kwargs.items():
