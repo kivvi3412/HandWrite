@@ -1,5 +1,4 @@
 # **HandWrite Generator**
----
 > 使用 PyQt5 编写的手写字生成器，旨在完成一些无用的手写作业任务
 >本项目提供了丰富的参数设置，以满足您在生成手写字时的个性化需求
 >[下载链接](https://github.com/kivvi3412/HandWrite/releases)
