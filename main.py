@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsScene
 from QT_GUI.qt_gui import *
 from core import handwrite_generator
 from tools import BasicTools
-
+import requests
 
 class Windows(QtWidgets.QDialog, Ui_Form):
     def __init__(self):
@@ -41,6 +41,7 @@ class Windows(QtWidgets.QDialog, Ui_Form):
     def connect_signal(self):
         self.page_number.currentIndexChanged.connect(self.page_number_change)
         self.pushButton_export.clicked.connect(self.export)
+        self.chatGPTPushButton_export.clicked.connect(self.submitToGPT)
 
     def set_default(self):
         # 设置宽度高度
@@ -83,6 +84,8 @@ class Windows(QtWidgets.QDialog, Ui_Form):
         )
         self.textEdit_main.setPlainText(default_text)
 
+        self.chatGPTTextEdit_main.setPlainText("向ChatGPT说出您的假设")
+
         # 设置默认倍率
         self.comboBox_resolution.addItems(self.basic_tools.default_rate_dict.keys())
         self.comboBox_resolution.setCurrentIndex(2)
@@ -118,6 +121,27 @@ class Windows(QtWidgets.QDialog, Ui_Form):
 
     def get_text_from_textedit_main(self):
         return self.textEdit_main.toPlainText()
+
+    def submitToGPT(self):
+        text = self.chatGPTTextEdit_main.toPlainText()
+
+
+        url = "https://openai.api2d.net/v1/chat/completions"
+
+        headers = {
+            'Content-Type': 'application/json',
+            'x-api2d-no-cache': "1",
+            'Authorization': 'Bearer 这里改成api2d的token'
+        }
+
+        data = {
+            "model": "gpt-3.5-turbo",
+            "safe_mode": "true",
+            "messages": [{"role": "user", "content": text}]
+,
+        }
+        response = requests.post(url, headers=headers, json=data)
+        self.textEdit_main.setText(response.json()["choices"][0]["message"]["content"])
 
     # 导出
     def export(self):

@@ -172,6 +172,11 @@ class Ui_Form(object):
         self.textEdit_main = QtWidgets.QTextEdit(Form)
         self.textEdit_main.setObjectName("textEdit_main")
         self.Info.addWidget(self.textEdit_main)
+
+        self.chatGPTTextEdit_main = QtWidgets.QTextEdit(Form)
+        self.chatGPTTextEdit_main.setObjectName("chatGPTTextEdit_main")
+        self.Info.addWidget(self.chatGPTTextEdit_main)
+
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
         self.comboBox_resolution = QtWidgets.QComboBox(Form)
@@ -181,6 +186,14 @@ class Ui_Form(object):
         self.pushButton_export = QtWidgets.QPushButton(Form)
         self.pushButton_export.setObjectName("pushButton_export")
         self.horizontalLayout_11.addWidget(self.pushButton_export)
+
+        self.chatGPTPushButton_export = QtWidgets.QPushButton(Form)
+        self.chatGPTPushButton_export.setObjectName("chatGPTPushButton_export")
+        self.horizontalLayout_11.addWidget(self.chatGPTPushButton_export)
+        self.chatGPTPushButton_export.setText("Submit to ChatGPT")
+
+
+
         self.horizontalLayout_11.setStretch(0, 1)
         self.horizontalLayout_11.setStretch(1, 5)
         self.Info.addLayout(self.horizontalLayout_11)
