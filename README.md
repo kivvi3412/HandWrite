@@ -13,6 +13,7 @@
 6. **颜色选择**：支持自定义字体颜色、背景颜色、透明色（transparent）和白色（white）
 7. **输入文本框**：方便输入需要生成的文字内容
 8. **扰动设置**：包括行间距扰动、字体大小扰动、字间距扰动、横向笔画扰动、纵向笔画扰动和旋转笔划扰动，以模拟手写字体的自然特点
+9. **bilibili教学**: [bilibili_link](https://www.bilibili.com/video/BV1324y1P7pV/?share_source=copy_web&vd_source=8f4728ca528c4f3b362697c9193278ff)
 
 ## **使用说明**
 1. **界面如下**
