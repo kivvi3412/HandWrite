@@ -16,6 +16,7 @@
 9. **bilibili教学**: [bilibili_link](https://www.bilibili.com/video/BV1324y1P7pV/?share_source=copy_web&vd_source=8f4728ca528c4f3b362697c9193278ff)
 
 ## **使用说明**
+从 [releases](https://github.com/kivvi3412/HandWrite/releases/tag/Release) 中下载本软件
 1. **界面如下**
 ![main_window.png](docs%2Fmain_window.png)
    (1 和 2)是纸张大小的宽度和高度，可以根据实际情况确定，接下来会有例子进行讲解  
@@ -36,5 +37,20 @@
    扰动设为较大，可以得到一个比较潦草的手写字体，例:
 ![example_parm_1.png](docs%2Fexample_parm_1.png)  
 实际情况可根据实际需求进行调整
-    
-   
+
+## **手动启动说明**
+1. 安装依赖库
+```shell
+uv sync
+```
+2. 运行`main.py`
+```shell
+python main.py
+```
+
+> 若报错，`qt.qpa.plugin: Could not find the Qt platform plugin "cocoa" in`
+> 
+> 原因是 "同一进程里混入了两套不同签名/不同路径的 Qt 库"
+> 例如 Homebrew 安装的裸 Qt （/opt/homebrew/…/libQt6…）
+> 
+> 解决方案：卸载homebrew的QT
