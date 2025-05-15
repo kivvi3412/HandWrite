@@ -1,1 +1,9 @@
 .idea/
+
+__pycache__/
+
+outputs/
+
+.venv/
+
+.vscode/

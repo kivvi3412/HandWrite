@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsScene
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QImage, QPixmap
+from PySide6.QtWidgets import QGraphicsPixmapItem, QGraphicsScene
 
 from QT_GUI.qt_gui import *
 from core import handwrite_generator
@@ -25,7 +25,7 @@ class Windows(QtWidgets.QDialog, Ui_Form):
 
     def img_show_func(self, img_path):
         frame = QImage(str(img_path), "PNG")
-        frame = frame.scaled(667, 945, Qt.KeepAspectRatio, Qt.SmoothTransformation | Qt.HighEventPriority)
+        frame = frame.scaled(667, 945, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         pix = QPixmap.fromImage(frame)
         item = QGraphicsPixmapItem(pix)
         scene = QGraphicsScene()

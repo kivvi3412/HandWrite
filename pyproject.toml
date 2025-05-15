@@ -1,0 +1,10 @@
+[project]
+name = "handwrite"
+version = "0.1.0"
+description = "本项目为解决一些大学无用手写作业"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "handright>=8.2.0",
+    "pyside6>=6.9.0",
+]
