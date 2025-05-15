@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QGraphicsView, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QTextEdit, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGraphicsView, QGroupBox,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -107,7 +107,7 @@ class Ui_Form(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.page_label = QLabel(Form)
         self.page_label.setObjectName(u"page_label")
-        self.page_label.setAlignment(Qt.AlignCenter)
+        self.page_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.horizontalLayout.addWidget(self.page_label)
 
@@ -126,6 +126,28 @@ class Ui_Form(object):
 
         self.Info = QVBoxLayout()
         self.Info.setObjectName(u"Info")
+        self.groupBox = QGroupBox(Form)
+        self.groupBox.setObjectName(u"groupBox")
+        self.horizontalLayout_16 = QHBoxLayout(self.groupBox)
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.label_current_config = QLabel(self.groupBox)
+        self.label_current_config.setObjectName(u"label_current_config")
+
+        self.horizontalLayout_16.addWidget(self.label_current_config)
+
+        self.pushButton_load_config = QPushButton(self.groupBox)
+        self.pushButton_load_config.setObjectName(u"pushButton_load_config")
+
+        self.horizontalLayout_16.addWidget(self.pushButton_load_config)
+
+        self.pushButton_save_config = QPushButton(self.groupBox)
+        self.pushButton_save_config.setObjectName(u"pushButton_save_config")
+
+        self.horizontalLayout_16.addWidget(self.pushButton_save_config)
+
+
+        self.Info.addWidget(self.groupBox)
+
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.label_width = QLabel(Form)
@@ -317,6 +339,10 @@ class Ui_Form(object):
         self.label_perturb_y_sigma.setText(QCoreApplication.translate("Form", u"\u7eb5\u5411\u7b14\u753b\u6270\u52a8", None))
         self.label_perturb_theta_sigma.setText(QCoreApplication.translate("Form", u"\u65cb\u8f6c\u7b14\u753b\u6270\u52a8", None))
         self.page_label.setText(QCoreApplication.translate("Form", u"Page:", None))
+        self.groupBox.setTitle(QCoreApplication.translate("Form", u"\u914d\u7f6e", None))
+        self.label_current_config.setText(QCoreApplication.translate("Form", u"current configure:", None))
+        self.pushButton_load_config.setText(QCoreApplication.translate("Form", u"\u52a0\u8f7d\u914d\u7f6e", None))
+        self.pushButton_save_config.setText(QCoreApplication.translate("Form", u"\u4fdd\u5b58\u914d\u7f6e", None))
         self.label_width.setText(QCoreApplication.translate("Form", u"\u5bbd\u5ea6", None))
         self.label_height.setText(QCoreApplication.translate("Form", u"\u9ad8\u5ea6", None))
         self.resolution_x.setText(QCoreApplication.translate("Form", u"x", None))
