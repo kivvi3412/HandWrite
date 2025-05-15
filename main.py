@@ -3,14 +3,14 @@ import os
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QImage, QPixmap
-from PySide6.QtWidgets import QGraphicsPixmapItem, QGraphicsScene
+from PySide6.QtWidgets import QGraphicsPixmapItem, QGraphicsScene, QDialog
 
 from QT_GUI.qt_gui import *
 from core import handwrite_generator
 from tools import BasicTools
 
 
-class Windows(QtWidgets.QDialog, Ui_Form):
+class Windows(QDialog, Ui_Form):
     def __init__(self):
         super(Windows, self).__init__()
         self.setupUi(self)
@@ -146,7 +146,7 @@ class Windows(QtWidgets.QDialog, Ui_Form):
 if __name__ == "__main__":
     import sys
 
-    app = QtWidgets.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     window = Windows()
     window.show()
     sys.exit(app.exec_())
