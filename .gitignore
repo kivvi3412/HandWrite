@@ -2,8 +2,6 @@
 
 __pycache__/
 
-outputs/*
-
 .venv/
 
 .vscode/
