@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
+from calendar import c
 import os
+from re import S
+import tomllib
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QImage, QPixmap
-from PySide6.QtWidgets import QGraphicsPixmapItem, QGraphicsScene, QDialog
+from PySide6.QtWidgets import QGraphicsPixmapItem, QGraphicsScene, QDialog, QFileDialog
 
 from QT_GUI.qt_gui import *
+from config import Config
 from core import handwrite_generator
 from tools import BasicTools
 
@@ -41,6 +45,8 @@ class Windows(QDialog, Ui_Form):
     def connect_signal(self):
         self.page_number.currentIndexChanged.connect(self.page_number_change)
         self.pushButton_export.clicked.connect(self.export)
+        self.pushButton_save_config.clicked.connect(self.save_config)
+        self.pushButton_load_config.clicked.connect(self.load_config)
 
     def set_default(self):
         # 设置宽度高度
@@ -118,6 +124,129 @@ class Windows(QDialog, Ui_Form):
 
     def get_text_from_textedit_main(self):
         return self.textEdit_main.toPlainText()
+    
+    def save_config(self):
+        config = Config()
+        config.width = int(float(self.lineEdit_width.text()))
+        config.height = int(float(self.lineEdit_height.text()))
+        config.ttf_selector = self.basic_tools.get_ttf_file_path()[1][self.ttf_selector.currentIndex()]
+        config.font_size = int(float(self.lineEdit_font_size.text()))
+        config.line_spacing = int(float(self.lineEdit_line_spacing.text()))
+        config.char_distance = int(float(self.lineEdit_char_distance.text()))
+        config.margin_top = int(float(self.lineEdit_margin_top.text()))
+        config.margin_bottom = int(float(self.lineEdit_margin_bottom.text()))
+        config.margin_left = int(float(self.lineEdit_margin_left.text()))
+        config.margin_right = int(float(self.lineEdit_margin_right.text()))
+        config.char_color = self.basic_tools.font_color_dict[self.comboBox_char_color.currentText()]
+        config.background_color = self.basic_tools.background_color_dict[self.comboBox_background_color.currentText()]
+        config.resolution = self.basic_tools.default_rate_dict[self.comboBox_resolution.currentText()]
+        config.line_spacing_sigma = float(self.lineEdit_line_spacing_sigma.text())
+        config.font_size_sigma = float(self.lineEdit_font_size_sigma.text())
+        config.word_spacing_sigma = float(self.lineEdit_word_spacing_sigma.text())
+        config.perturb_x_sigma = float(self.lineEdit_perturb_x_sigma.text())
+        config.perturb_y_sigma = float(self.lineEdit_perturb_y_sigma.text())
+        config.perturb_theta_sigma = float(self.lineEdit_perturb_theta_sigma.text())
+        path, _ = QFileDialog.getSaveFileName(self, "保存配置文件", "", "TOML Files (*.toml)")
+        if not path:
+            print("No configuration file selected.")
+            return
+        config.save(path)
+        self.label_current_config.setText(f"当前配置文件:\n {path}")
+
+
+    def load_config(self):
+        """
+        Loads configuration from a TOML file and updates the UI elements.
+        """
+        path, _ = QFileDialog.getOpenFileName(self, "加载配置文件", "", "TOML Files (*.toml)")
+
+        if not path:
+            print("No configuration file selected.")
+            return
+
+        try:
+            config = Config(path)
+
+            if config.width is not None:
+                self.lineEdit_width.setText(str(config.width))
+            if config.height is not None:
+                self.lineEdit_height.setText(str(config.height))
+
+            if config.ttf_selector is not None:
+                for i, ttf in enumerate(self.basic_tools.get_ttf_file_path()[1]):
+                    if ttf == config.ttf_selector:
+                        self.ttf_selector.setCurrentIndex(i)
+                        break
+
+
+            if config.font_size is not None:
+                self.lineEdit_font_size.setText(str(config.font_size))
+            if config.line_spacing is not None:
+                self.lineEdit_line_spacing.setText(str(config.line_spacing))
+            if config.char_distance is not None:
+                self.lineEdit_char_distance.setText(str(config.char_distance))
+
+            if config.margin_top is not None:
+                self.lineEdit_margin_top.setText(str(config.margin_top))
+            if config.margin_bottom is not None:
+                self.lineEdit_margin_bottom.setText(str(config.margin_bottom))
+            if config.margin_left is not None:
+                self.lineEdit_margin_left.setText(str(config.margin_left))
+            if config.margin_right is not None:
+                self.lineEdit_margin_right.setText(str(config.margin_right))
+
+            if config.char_color is not None:
+                for k, v in self.basic_tools.font_color_dict.items():
+                    if v == tuple(config.char_color):
+                        self.comboBox_char_color.setCurrentText(k)
+                        break
+                    self.comboBox_char_color.setCurrentText(k)
+                else:
+                    print(f"Warning: Font color {config.char_color} not found in color options.")
+
+
+            if config.background_color is not None:
+                for k, v in self.basic_tools.background_color_dict.items():
+                    if v == tuple(config.background_color):
+                        self.comboBox_background_color.setCurrentText(k)
+                        break
+                else:
+                    print(f"Warning: Background color {config.background_color} not found in color options.")
+            
+
+            if config.resolution is not None:
+                for k, v in self.basic_tools.default_rate_dict.items():
+                    if v == config.resolution:
+                        self.comboBox_resolution.setCurrentText(k)
+                        break
+                else:
+                    print(f"Warning: Resolution {config.resolution} not found in resolution options.")
+
+            if config.line_spacing_sigma is not None:
+                self.lineEdit_line_spacing_sigma.setText(str(config.line_spacing_sigma))
+            if config.font_size_sigma is not None:
+                self.lineEdit_font_size_sigma.setText(str(config.font_size_sigma))
+            if config.word_spacing_sigma is not None:
+                self.lineEdit_word_spacing_sigma.setText(str(config.word_spacing_sigma))
+            if config.perturb_x_sigma is not None:
+                self.lineEdit_perturb_x_sigma.setText(str(config.perturb_x_sigma))
+            if config.perturb_y_sigma is not None:
+                self.lineEdit_perturb_y_sigma.setText(str(config.perturb_y_sigma))
+            if config.perturb_theta_sigma is not None:
+                self.lineEdit_perturb_theta_sigma.setText(str(config.perturb_theta_sigma))
+
+            print(f"Configuration loaded successfully from {path}")
+
+            self.label_current_config.setText(f"当前配置文件:\n {path}")
+
+        except FileNotFoundError:
+            print(f"Error: File not found at {path}")
+        except tomllib.TOMLDecodeError as e:
+            print(f"Error decoding TOML file {path}: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred while loading config: {e}")
+
+
 
     # 导出
     def export(self):
