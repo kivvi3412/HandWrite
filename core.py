@@ -70,9 +70,11 @@ class handwrite_generator(object):
         if self.template is None:
             self.generate_template()
         images = handwrite(text, self.template, "outpus")
+        output_dir = Path("outputs")
+        output_dir.mkdir(parents=True, exist_ok=True)
         for i, im in enumerate(images):
             assert isinstance(im, Image.Image)
-            save_path = Path("outputs").joinpath(f"{i}.png")
+            save_path = output_dir.joinpath(f"{i}.png")
             temp_file_path_dict[i] = save_path
             im.save(save_path)
         return temp_file_path_dict

@@ -95,7 +95,7 @@
           <string>Page:</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -108,6 +108,36 @@
    </item>
    <item>
     <layout class="QVBoxLayout" name="Info">
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>配置</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_16">
+        <item>
+         <widget class="QLabel" name="label_current_config">
+          <property name="text">
+           <string>current configure:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_load_config">
+          <property name="text">
+           <string>加载配置</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_save_config">
+          <property name="text">
+           <string>保存配置</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
