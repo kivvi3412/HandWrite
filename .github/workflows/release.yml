@@ -1,0 +1,91 @@
+name: Publish to Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+' # Matches vX.Y.Z semantic version tags
+
+
+jobs:
+  publish:
+    name: Build and publish to GitHub Release
+    permissions:
+      contents: write # This permission is required to upload assets to a GitHub Release
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    # 1. Check out the repository code
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    # 2. Set up Python (only need one version for building/publishing)
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13" # Or your preferred Python version for building
+
+    # 3. Install uv
+    - name: Install uv (Linux and macOS)
+      if: runner.os != 'Windows'
+      run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+    - name: Install uv (Windows)
+      if: runner.os == 'Windows'
+      run: powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+    # 4. Add uv to PATH for subsequent steps
+    - name: Add uv to PATH
+      run: echo "$HOME/.uv/bin" >> $GITHUB_PATH
+
+    - name: Sync dependencies
+      run: uv venv && uv sync --all-extras
+
+    - name: Enter the uv environment
+      if: runner.os != 'Windows'
+      run: source .venv/bin/activate
+
+    - name: Enter the uv environment
+      if: runner.os == 'Windows'
+      run: .venv\Scripts\Activate.ps1
+
+    - name: Build distribution
+      run: uv run pyinstaller --onefile --noconsole main.py
+
+    - name: Copy dependencies (Linux/macOS)
+      if: runner.os != 'Windows'
+      run: cp -a ttf_library dist/
+
+    - name: Copy dependencies (Windows)
+      if: runner.os == 'Windows'
+      run: Copy-Item -Recurse -Path ttf_library -Destination dist
+
+
+    # --- 新增步骤：打包 'dist' 目录为压缩文件 ---
+    # 8. Archive 'dist' directory for Linux/macOS
+    - name: Archive distribution (Linux/macOS)
+      if: runner.os != 'Windows' 
+      run: tar -czvf dist.tar.gz dist/
+
+    # 9. Archive 'dist' directory for Windows
+    - name: Archive distribution (Windows)
+      if: runner.os == 'Windows' 
+      run: Compress-Archive -Path dist -DestinationPath dist.zip
+      shell: pwsh # 使用 PowerShell 命令
+
+    # --- 更新上传到 Release 的步骤 ---
+    # 10. Upload the built binaries to the GitHub Release
+    #     现在上传的是整个打包好的 'dist' 目录的压缩文件
+    - name: Upload archived distribution to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        # 根据操作系统动态设置要上传的文件路径 (dist.zip 或 dist.tar.gz)
+        file: ${{ runner.os == 'Windows' && 'dist.zip' || 'dist.tar.gz' }}
+        # 动态命名资产，包含操作系统和正确的扩展名
+        asset_name: handwrite-dist-${{ matrix.os }}.${{ runner.os == 'Windows' && 'zip' || 'tar.gz' }}
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "This is the distribution for Handwrite."
