@@ -3,10 +3,12 @@ from typing import Any, Optional
 
 import toml
 
+
 class Config:
     """
     Represents the configuration loaded from a TOML file and allows saving.
     """
+
     def __init__(self, path: Optional[str] = None):
         """
         Initializes the Config object by loading the TOML file.
@@ -14,7 +16,7 @@ class Config:
         Args:
             path: The path to the TOML configuration file.
         """
-        self.__config = {} # Initialize with empty dict
+        self.__config = {}  # Initialize with empty dict
 
         if path:
             try:
@@ -24,7 +26,6 @@ class Config:
                 print(f"Warning: Configuration file not found at {path}. Starting with empty config.")
             except tomllib.TOMLDecodeError as e:
                 print(f"Error decoding TOML file {path}: {e}. Starting with empty config.")
-
 
     def __get_config_value(self, key: str, default: Any = None) -> Any:
         """
@@ -56,7 +57,6 @@ class Config:
             print(f"Error saving configuration to {path}: {e}")
         except Exception as e:
             print(f"An unexpected error occurred while saving config: {e}")
-
 
     # --- Properties for accessing configuration values ---
 
@@ -250,9 +250,7 @@ class Config:
         """Sets the rotation stroke perturbation sigma."""
         self.__config["perturb_theta_sigma"] = value
 
-
     # You might want to add a method to get the raw config dictionary
     def get_raw_config(self) -> dict:
         """Returns the raw configuration dictionary."""
         return self.__config
-

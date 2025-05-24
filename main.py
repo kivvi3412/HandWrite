@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
-from calendar import c
 import os
-from re import S
 import tomllib
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import QGraphicsPixmapItem, QGraphicsScene, QDialog, QFileDialog
 
 from QT_GUI.qt_gui import *
@@ -124,7 +120,7 @@ class Windows(QDialog, Ui_Form):
 
     def get_text_from_textedit_main(self):
         return self.textEdit_main.toPlainText()
-    
+
     def save_config(self):
         config = Config()
         config.width = int(float(self.lineEdit_width.text()))
@@ -153,7 +149,6 @@ class Windows(QDialog, Ui_Form):
         config.save(path)
         self.label_current_config.setText(f"当前配置文件:\n {path}")
 
-
     def load_config(self):
         """
         Loads configuration from a TOML file and updates the UI elements.
@@ -177,7 +172,6 @@ class Windows(QDialog, Ui_Form):
                     if ttf == config.ttf_selector:
                         self.ttf_selector.setCurrentIndex(i)
                         break
-
 
             if config.font_size is not None:
                 self.lineEdit_font_size.setText(str(config.font_size))
@@ -204,7 +198,6 @@ class Windows(QDialog, Ui_Form):
                 else:
                     print(f"Warning: Font color {config.char_color} not found in color options.")
 
-
             if config.background_color is not None:
                 for k, v in self.basic_tools.background_color_dict.items():
                     if v == tuple(config.background_color):
@@ -212,7 +205,6 @@ class Windows(QDialog, Ui_Form):
                         break
                 else:
                     print(f"Warning: Background color {config.background_color} not found in color options.")
-            
 
             if config.resolution is not None:
                 for k, v in self.basic_tools.default_rate_dict.items():
@@ -245,8 +237,6 @@ class Windows(QDialog, Ui_Form):
             print(f"Error decoding TOML file {path}: {e}")
         except Exception as e:
             print(f"An unexpected error occurred while loading config: {e}")
-
-
 
     # 导出
     def export(self):
