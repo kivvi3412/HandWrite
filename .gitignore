@@ -7,3 +7,9 @@ __pycache__/
 .vscode/
 
 outputs/
+
+build/
+
+dist/
+
+main.spec
